@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>少林寺拳法 攻防じゃんけん</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="game.js" defer></script>
+</head>
+<body>
+    <div id="game-container">
+        <h1>少林寺拳法 攻防じゃんけん</h1>
+        
+        <div id="status-board">
+            <div class="player-box">
+                <h2>あなた (守者)</h2>
+                <p>体力: <span id="p-hp">100</span></p>
+                <p>構え: <span id="p-kamae">---</span></p>
+            </div>
+            <div class="player-box">
+                <h2>相手 (攻者/CPU)</h2>
+                <p>体力: <span id="c-hp">100</span></p>
+                <p>構え: <span id="c-kamae">---</span></p>
+            </div>
+        </div>
+
+        <div id="message-box">
+            <p id="game-message">ゲームを開始してください。まずはあなたの構えを選びます。</p>
+        </div>
+
+        <div id="action-area">
+            <h3 id="action-title">構えを選択</h3>
+            <div id="buttons">
+                </div>
+        </div>
+    </div>
+</body>
+</html>

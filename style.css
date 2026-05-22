@@ -1,0 +1,177 @@
+/* 全体のリセットと背景 */
+body {
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+/* ゲームのメインコンテナ */
+#game-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 100%;
+    max-width: 550px;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #2c3e50;
+    border-bottom: 2px solid #34495e;
+    padding-bottom: 10px;
+}
+
+/* ステータスボード（お互いの体力と構え） */
+#status-board {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.player-box {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 15px 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+}
+
+/* プレイヤー側は道着の黒（主役）、CPUは少し引いた色 */
+.player-box:first-child {
+    border-left: 5px solid #2c3e50;
+}
+.player-box:last-child {
+    border-left: 5px solid #7f8c8d;
+}
+
+.player-box h2 {
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    color: #555;
+}
+
+.player-box p {
+    font-size: 15px;
+    margin: 6px 0;
+    font-weight: bold;
+}
+
+/* 数値や構えを目立たせる */
+#p-hp, #c-hp {
+    font-size: 18px;
+    color: #e74c3c;
+}
+#p-kamae, #c-kamae {
+    color: #16a085;
+}
+
+/* 黒帯・道着をイメージしたシックなメッセージボックス */
+#message-box {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    min-height: 90px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: left;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* 操作エリアの見出し */
+#action-title {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+/* ボタンのコンテナ（縦に綺麗に並べる、または折り返す） */
+#buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* 少林寺拳法の規律正しさをイメージしたボタンデザイン */
+button {
+    background: #34495e !important; /* テストの赤を上書き */
+    color: white !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+    font-weight: bold;
+    border-radius: 6px !important;
+    cursor: pointer;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+    min-width: 130px;
+}
+
+/* ボタンにマウスを乗せたときの演出 */
+button:hover {
+    background: #1b2a47 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* ボタンを押した瞬間の沈み込み */
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+
+/* 画面幅が500px以下（スマホ）のときだけ適用される設定 */
+@media (max-width: 500px) {
+    #game-container {
+        padding: 15px;
+        margin: 10px;
+        width: calc(100% - 20px);
+    }
+    
+    h1 {
+        font-size: 20px;
+    }
+
+    #status-board {
+        flex-direction: row; /* 横並びを維持しつつフォントを小さく */
+        gap: 8px;
+    }
+
+    .player-box {
+        padding: 8px 4px;
+    }
+
+    .player-box h2 {
+        font-size: 13px;
+    }
+
+    .player-box p {
+        font-size: 12px;
+    }
+
+    button {
+        padding: 14px 15px !important; /* スマホでタップしやすいように縦を少し広げる */
+        font-size: 13px !important;
+        flex: 1 1 40%; /* ボタンを2列に綺麗に並べる */
+        min-width: 110px;
+    }
+}
