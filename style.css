@@ -336,52 +336,60 @@ div#buttons button.awakened-btn:hover {
     font-weight: bold;
 }
 
-/* --- ツールチップ（詳細ポップアップ）のスタイル --- */
-.tooltip-container {
-    position: relative;
-    display: inline-block;
-    flex: 1 1 calc(50% - 10px); /* 親ボタンと同じ幅設定 */
+/* --- ツールチップ（詳細ポップアップ）のスタイル修正 --- */
+/* --- 画面下部：コントロールパネル（基準点に設定） --- */
+.control-panel {
+    margin-top: 10px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+    
+    /* ★超重要：吹き出しの位置の「基準」にするために追記 */
+    position: relative; 
 }
-/* コンテナ内のボタンは幅100%に */
-.tooltip-container button {
-    width: 100%;
-    margin: 0 !important;
+
+/* --- ツールチップ（詳細ポップアップ）の位置を完全固定 --- */
+.tooltip-container {
+    position: static; /* 基準を.control-panelにするためstaticのままでOK */
+    display: inline-block;
+    flex: 1 1 calc(50% - 10px); 
 }
 
 .waza-tooltip {
     visibility: hidden;
-    width: 240px;
-    /* 詳細ポップアップも明るく */
+    /* コントロールパネルの横幅（左右に10pxの余白）に合わせる */
+    width: calc(100% - 20px); 
+    box-sizing: border-box;
+    
     background-color: rgba(255, 255, 255, 0.98); 
     color: #333;
     text-align: left;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 10px 12px;
+    border: 2px solid #3498db; 
+    border-radius: 8px;
+    padding: 12px;
+    
+    /* === 📍 表示位置の絶対固定 === */
     position: absolute;
     z-index: 9999;
-    bottom: 125%; 
-    left: 50%;
-    transform: translateX(-50%);
+    
+    /* コントロールパネルの枠線の「外側すぐ真上」に配置 */
+    top: 0;
+    left: 10px;
+    transform: translateY(-100%) translateY(-8px); /* パネルの真上で綺麗に浮かせます */
+    
     opacity: 0;
-    transition: opacity 0.2s;
-    font-size: 11px;
+    transition: opacity 0.2s ease;
+    font-size: 0.85rem; 
     line-height: 1.5;
     pointer-events: none; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1); 
     white-space: normal; 
 }
 
-/* ポップアップの矢印（明るい色に） */
+/* ★下についていた三角の矢印は見切れる原因になるので、スッキリ削除 */
 .waza-tooltip::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(255, 255, 255, 0.98) transparent transparent transparent;
+    display: none;
 }
 
 /* PC：ホバー時に表示 */
@@ -390,7 +398,7 @@ div#buttons button.awakened-btn:hover {
     opacity: 1 !important;
 }
 
-/* スマホ用表示スタイル */
+/* スマホ：長押し（またはタップ）時に表示 */
 .waza-tooltip.show-tooltip {
     visibility: visible !important;
     opacity: 1 !important;
