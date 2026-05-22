@@ -8,30 +8,117 @@
     <script src="game.js" defer></script>
 </head>
 <body>
-    <div id="game-container">
-        <h1>少林寺拳法 攻防じゃんけん</h1>
-        
-        <div id="status-board">
-            <div class="player-box">
-                <h2>あなた (守者)</h2>
-                <p>体力: <span id="p-hp">100</span></p>
-                <p>構え: <span id="p-kamae">---</span></p>
-            </div>
-            <div class="player-box">
-                <h2>相手 (攻者/CPU)</h2>
-                <p>体力: <span id="c-hp">100</span></p>
-                <p>構え: <span id="c-kamae">---</span></p>
+    <div class="game-container">
+        <div id="screen-home" class="screen active">
+            <h1 class="main-title">少林寺拳法 攻防演武</h1>
+            <p class="subtitle">〜 構えと技の相性を見極めよ 〜</p>
+            <div class="home-menu">
+                <button class="menu-btn start-btn" onclick="changeScreen('game')">演武開始 (ゲームスタート)</button>
+                <button class="menu-btn" onclick="changeScreen('rule')">ルールガイド</button>
+                <button class="menu-btn" onclick="changeScreen('kamoku')">科目表 (技一覧)</button>
             </div>
         </div>
 
-        <div id="message-box">
-            <p id="game-message">ゲームを開始してください。まずはあなたの構えを選びます。</p>
+        <div id="screen-rule" class="screen">
+            <h2>【ルールガイド】</h2>
+            <div class="scroll-content">
+                <p>このゲームは、少林寺拳法の「攻者（攻撃）」と「守者（防御・反撃）」に分かれて戦うターン制相性バトルです。</p>
+                <h3>1. 構えの選択</h3>
+                <p>守者が7つの構えから1つを選び、それに応じて攻者が構えを選択します（構えによって選べる選択肢が制限されます）。</p>
+                <h3>2. 技の選択と相性</h3>
+                <p>攻者の攻撃に対し、守者が「正しい対応技」を選択できれば<b>【防御反攻成功】</b>となり、守者が一本（攻者にダメージ）。間違った技を選ぶと攻撃がヒットし、攻者が一本（守者にダメージ）となります。</p>
+                <h3>3. 覚醒・昇格システム</h3>
+                <p>・<b>守者HP50%以下</b>：守者の技がより強力な技に昇格（黄色文字）したり、特殊な防技（押小手など）が解放されます。<br>
+                ・<b>攻者HP50%以下</b>：攻守ともに、一発逆転を狙える強力な限定技（黄色ボタン）が解放されます。</p>
+            </div>
+            <button class="back-btn" onclick="changeScreen('home')">ホームへ戻る</button>
         </div>
 
-        <div id="action-area">
-            <h3 id="action-title">構えを選択</h3>
-            <div id="buttons">
+        <div id="screen-kamoku" class="screen">
+            <h2>【技術科目表】</h2>
+            <div class="scroll-content">
+                <table class="kamoku-table">
+                    <thead>
+                        <tr>
+                            <th>攻防の構え</th>
+                            <th>攻者の技 (威力)</th>
+                            <th>守者の対応技 (威力)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>中段 vs 中段</td>
+                            <td>内手首掴む (10)<br>外手首掴む (10)</td>
+                            <td>腕十字 (5) / 小手抜 (5)<br>寄抜 (5) / 巻抜 (5) / 送小手 (5) / 突抜 (5)</td>
+                        </tr>
+                        <tr>
+                            <td>中段 vs 一字</td>
+                            <td>上段逆突 (5) / 上段振突 (5)<br>手刀打 (5)<br><span class="highlight-txt">上中二連 (10)※常時</span></td>
+                            <td>流水蹴 (10) / 内受突 (5) など<br>上受突 (5)<br><span class="highlight-txt">突天一 (15)※常時</span></td>
+                        </tr>
+                        <tr>
+                            <td>一字 vs 一字</td>
+                            <td>差込廻蹴 (10)<br>金的蹴 (10)</td>
+                            <td>十字受蹴 (15) / 払受蹴 (15)<br>金的蹴膝受波返 (15)</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="table-section">⚠️ 以下はHP50%以下で解放される限定技（一部抜粋）</td>
+                        </tr>
+                        <tr>
+                            <td>中段 vs 中段<br>(HP50%以下)</td>
+                            <td>一本背投 (15)</td>
+                            <td>諸手輪抜 (15) / 諸手巻抜 (15)<br><span class="highlight-txt">押小手 (15) ※守者HP50%以下</span></td>
+                        </tr>
+                        <tr>
+                            <td>一字 vs 一字<br>(HP50%以下)</td>
+                            <td>振突逆突二連 (15)<br>振突二連 (15)</td>
+                            <td>混天一 (15)<br>振天二 (15)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="back-btn" onclick="changeScreen('home')">ホームへ戻る</button>
+        </div>
+
+        <div id="screen-game" class="screen">
+            <div class="battle-layout">
+                
+                <div class="fighter-area cpu-side">
+                    <div class="fighter-name">相手（CPU）</div>
+                    <div class="hp-container">
+                        <div class="hp-bar-bg">
+                            <div id="c-hp-bar" class="hp-bar animate-bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="c-hp" class="hp-text">100</div>
+                    </div>
+                    <div id="c-kamae" class="kamae-text">待機中...</div>
                 </div>
+
+                <div class="result-area">
+                    <div id="game-message">対戦開始！<br>あなたの守者（防御）ターンです。</div>
+                </div>
+
+                <div class="fighter-area player-side">
+                    <div id="p-kamae" class="kamae-text">選択中...</div>
+                    <div class="hp-container">
+                        <div class="hp-bar-bg">
+                            <div id="p-hp-bar" class="hp-bar animate-bar" style="width: 100%;"></div>
+                        </div>
+                        <div id="p-hp" class="hp-text">100</div>
+                    </div>
+                    
+                    <div class="control-panel">
+                        <h3 id="action-title">あなたの構えを選んでください</h3>
+                        <div id="buttons">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="sub-menu-area">
+                    <button class="quit-btn" onclick="quitGame()">ホームへ戻る</button>
+                </div>
+
+            </div>
         </div>
     </div>
 </body>

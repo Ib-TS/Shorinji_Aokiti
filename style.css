@@ -1,177 +1,460 @@
-/* 全体のリセットと背景 */
+/* --- 全体の基本設定（明るい道場イメージ） --- */
 body {
-    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    /* 背景を明るい生成り色（和紙のような温かみ）に */
+    background-color: #fdfcf5;
+    background-image: none; 
+    color: #333; /* 文字色は濃いグレーで読みやすく */
+    margin: 0;
+    padding: 10px; /* スマホ用に余白を詰める */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    margin: 0;
-    color: #333;
 }
 
-/* ゲームのメインコンテナ */
-#game-container {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-    text-align: center;
+/* --- ホーム画面の装飾 --- */
+.main-title {
+    font-size: 2.2rem;
+    color: #2c3e50; /* 濃い紺色 */
+    text-shadow: none; /* 影を消してスッキリと */
+    margin-bottom: 5px;
+}
+.subtitle {
+    color: #7f8c8d;
+    font-style: italic;
+    margin-bottom: 40px;
+}
+.home-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     width: 100%;
-    max-width: 550px;
+    max-width: 350px;
+    margin: 0 auto;
+}
+.menu-btn {
+    /* 通常ボタンを白基調に */
+    background-color: #ffffff;
+    color: #2c3e50;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid #bdc3c7; /* 薄いグレーのフチ */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* 軽い影 */
+}
+.menu-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #95a5a6;
+    transform: translateY(-2px);
+}
+.start-btn {
+    /* スタートボタンは爽やかな青に */
+    background-color: #3498db;
+    border-color: #2980b9;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.start-btn:hover {
+    background-color: #2980b9;
+}
+
+/* --- ガイド・科目表の共通パーツ --- */
+.scroll-content {
+    max-height: 350px; /* スマホ用に少し低く */
+    overflow-y: auto;
+    text-align: left;
+    background-color: #ffffff; /* 白背景 */
+    color: #333;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.scroll-content h3 {
+    color: #2980b9; /* 青色のアウトライン */
+    margin-top: 15px;
+    border-left: 4px solid #2980b9;
+    padding-left: 8px;
+}
+.back-btn {
+    background-color: #95a5a6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.back-btn:hover {
+    background-color: #7f8c8d;
+}
+
+/* --- 科目表のテーブル装飾 --- */
+.kamoku-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.kamoku-table th, .kamoku-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px;
+    text-align: left;
+}
+.kamoku-table th {
+    background-color: #f8f9fa; /* 薄いグレーのヘッダー */
+    color: #2c3e50;
+}
+.table-section {
+    background-color: #fdfcf5;
+    color: #e67e22; /* オレンジで強調 */
+    font-weight: bold;
+    text-align: center !important;
+}
+.highlight-txt {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+/* --- 画面切り替えの基本設定 --- */
+.screen {
+    display: none; 
+    width: 100%;
+}
+.screen.active {
+    display: block; 
+}
+
+/* --- ゲーム全体のコンテナ（横幅を完全に固定、白基調に） --- */
+.game-container {
+    width: 100%;
+    max-width: 480px; /* 横幅をカチッと固定 */
+    margin: 0 auto;
+    background-color: #ffffff; /* コンテナを白に */
+    border: 1px solid #e0e0e0; /* 薄いフチ */
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* 影を優しく */
+}
+
+/* --- バトルレイアウトの固定化 --- */
+.battle-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 80vh; 
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    padding: 0;
+}
+
+/* コンテナ伸縮防止ルール */
+.fighter-area, .result-area, .control-panel {
+    width: 100% !important;
     box-sizing: border-box;
 }
 
-h1 {
-    font-size: 24px;
-    margin-top: 0;
-    margin-bottom: 25px;
-    color: #2c3e50;
-    border-bottom: 2px solid #34495e;
-    padding-bottom: 10px;
-}
-
-/* ステータスボード（お互いの体力と構え） */
-#status-board {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 15px;
-}
-
-.player-box {
-    flex: 1;
-    border: 1px solid #ddd;
-    padding: 15px 10px;
+/* --- 共通：ファイター情報エリア --- */
+.fighter-area {
+    width: 100%;
+    background: #dcf7ee; /* 薄いグレーの背景 */
+    padding: 12px;
     border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-    transition: all 0.3s ease;
+    box-sizing: border-box;
+    border: 1px solid #eaeaea;
 }
 
-/* プレイヤー側は道着の黒（主役）、CPUは少し引いた色 */
-.player-box:first-child {
-    border-left: 5px solid #2c3e50;
-}
-.player-box:last-child {
-    border-left: 5px solid #7f8c8d;
-}
-
-.player-box h2 {
-    font-size: 16px;
-    margin: 0 0 10px 0;
-    color: #555;
-}
-
-.player-box p {
-    font-size: 15px;
-    margin: 6px 0;
+.fighter-name {
+    font-size: 1.1rem;
     font-weight: bold;
+    color: #cd3a2a; /* 相手の名前は赤 */
+    margin-bottom: 4px;
+    text-align: center;
+}
+.player-side .fighter-name {
+    color: #243240; /* 自分の名前は紺 */
 }
 
-/* 数値や構えを目立たせる */
-#p-hp, #c-hp {
-    font-size: 18px;
-    color: #e74c3c;
-}
-#p-kamae, #c-kamae {
-    color: #16a085;
+/* --- HPバーシステム --- */
+.hp-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 6px 0;
 }
 
-/* 黒帯・道着をイメージしたシックなメッセージボックス */
-#message-box {
-    background-color: #2c3e50;
-    color: #ffffff;
-    padding: 15px 20px;
-    border-radius: 8px;
-    min-height: 90px;
-    margin-bottom: 25px;
+.hp-bar-bg {
+    flex-grow: 1;
+    height: 18px;
+    background-color: #e0e0e0; /* 明るいグレーの背景 */
+    border-radius: 9px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.hp-bar {
+    height: 100%;
+    /* 明るい緑色のグラデーション */
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    border-radius: 9px;
+}
+
+/* HPが減ったときの色変化（明るい色に） */
+.hp-bar.warning {
+    background: linear-gradient(90deg, #f1c40f, #f39c12); /* オレンジ */
+}
+.hp-bar.danger {
+    background: linear-gradient(90deg, #e74c3c, #c0392b); /* 赤 */
+}
+
+.hp-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: monospace;
+    min-width: 35px;
+    text-align: right;
+    color: #333; /* 文字は濃く */
+}
+
+/* 構え・攻守テキスト（明るい色に） */
+.kamae-text {
+    font-size: 0.95rem;
+    color: #2980b9; /* 青 */
+    font-weight: bold;
+    text-align: center;
+    background: #e3f2fd; /* 薄い青背景 */
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #bbdefb;
+}
+.cpu-side .kamae-text {
+    color: #e67e22; /* オレンジ */
+    background: #fff3e0; /* 薄いオレンジ背景 */
+    border: 1px solid #ffe0b2;
+}
+
+/* --- 画面中央：リザルトエリア（ここを明るく強調） --- */
+.result-area {
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
-    line-height: 1.6;
-    text-align: left;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin: 15px 0;
+    min-height: 100px;
+    /* 明るい黄色（演武の盛り上がり）背景 */
+    background: #fdf9e1; 
+    border-left: 5px solid #f1c40f;
+    border-right: 5px solid #f1c40f;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: inset 0 0 10px rgba(241, 196, 15, 0.2);
+    box-sizing: border-box;
 }
 
-/* 操作エリアの見出し */
+#game-message {
+    font-size: 1rem;
+    line-height: 1.5;
+    width: 100%;
+    text-align: center;
+    color: #333;
+}
+
+/* --- 画面下部：コントロールパネル --- */
+.control-panel {
+    margin-top: 10px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #eaeaea;
+}
+
 #action-title {
-    font-size: 16px;
+    font-size: 0.9rem;
     color: #7f8c8d;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
-/* ボタンのコンテナ（縦に綺麗に並べる、または折り返す） */
+/* --- ボタンコンテナの折り返し設定 --- */
 #buttons {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-wrap: wrap; /* ボタンを下に折り返す */
     gap: 10px;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* 少林寺拳法の規律正しさをイメージしたボタンデザイン */
-button {
-    background: #34495e !important; /* テストの赤を上書き */
-    color: white !important;
-    border: none !important;
-    padding: 12px 20px !important;
-    font-size: 14px !important;
+/* 通常の技ボタン（明るい色に） */
+#buttons button {
+    flex: 1 1 calc(50% - 10px); /* 2列並びを基本に */
+    min-width: 120px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+#buttons button:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+/* アップグレードされた技（黄色文字・太字） */
+.upgraded-waza {
+    color: #e67e22 !important; /* オレンジ色で強調 */
+    font-weight: bold !important;
+}
+
+/* 覚醒限定技（黄色ボタン・黒文字） */
+div#buttons button.awakened-btn {
+    background: #f1c40f !important; /* 黄色背景 */
+    color: #333 !important;      /* 黒文字 */
+    font-weight: bold !important;
+    border: 1px solid #f39c12 !important;
+    text-shadow: none !important;
+    box-shadow: 0 2px 5px rgba(241, 196, 15, 0.4) !important;
+}
+div#buttons button.awakened-btn:hover {
+    background: #f39c12 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* 結果ログ内の強調文字 */
+.yellow-text {
+    color: #e67e22; /* ログ内もオレンジに */
     font-weight: bold;
-    border-radius: 6px !important;
+}
+
+/* --- ツールチップ（詳細ポップアップ）のスタイル --- */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    flex: 1 1 calc(50% - 10px); /* 親ボタンと同じ幅設定 */
+}
+/* コンテナ内のボタンは幅100%に */
+.tooltip-container button {
+    width: 100%;
+    margin: 0 !important;
+}
+
+.waza-tooltip {
+    visibility: hidden;
+    width: 240px;
+    /* 詳細ポップアップも明るく */
+    background-color: rgba(255, 255, 255, 0.98); 
+    color: #333;
+    text-align: left;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 125%; 
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 11px;
+    line-height: 1.5;
+    pointer-events: none; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    white-space: normal; 
+}
+
+/* ポップアップの矢印（明るい色に） */
+.waza-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.98) transparent transparent transparent;
+}
+
+/* PC：ホバー時に表示 */
+.tooltip-container:hover .waza-tooltip {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* スマホ用表示スタイル */
+.waza-tooltip.show-tooltip {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* スマホ長押しメニュー防止 */
+button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* --- 画面左下：控えめなホームへ戻るボタン --- */
+.sub-menu-area {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+    padding-left: 5px;
+}
+
+.quit-btn {
+    background-color: #f8f9fa; /* 明るいグレー */
+    color: #7f8c8d;
+    border: 1px solid #e0e0e0;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease !important;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
-    min-width: 130px;
+    transition: all 0.2s;
 }
 
-/* ボタンにマウスを乗せたときの演出 */
-button:hover {
-    background: #1b2a47 !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 12px rgba(0,0,0,0.15) !important;
+.quit-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
 }
 
-/* ボタンを押した瞬間の沈み込み */
-button:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+/* バーのアニメーション */
+.animate-bar {
+    transition: width 0.4s ease-out;
 }
 
-
-/* 画面幅が500px以下（スマホ）のときだけ適用される設定 */
-@media (max-width: 500px) {
-    #game-container {
+/* --- メディアクエリ（スマホ用調整） --- */
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    .game-container {
         padding: 15px;
-        margin: 10px;
-        width: calc(100% - 20px);
+        border-radius: 8px;
     }
-    
-    h1 {
-        font-size: 20px;
+    .main-title {
+        font-size: 1.8rem;
     }
-
-    #status-board {
-        flex-direction: row; /* 横並びを維持しつつフォントを小さく */
-        gap: 8px;
+    .fighter-area {
+        padding: 8px;
     }
-
-    .player-box {
-        padding: 8px 4px;
+    .hp-text {
+        font-size: 1.1rem;
     }
-
-    .player-box h2 {
-        font-size: 13px;
+    #game-message {
+        font-size: 0.9rem;
     }
-
-    .player-box p {
-        font-size: 12px;
-    }
-
-    button {
-        padding: 14px 15px !important; /* スマホでタップしやすいように縦を少し広げる */
-        font-size: 13px !important;
-        flex: 1 1 40%; /* ボタンを2列に綺麗に並べる */
-        min-width: 110px;
+    #buttons button {
+        padding: 10px;
+        font-size: 0.9rem;
     }
 }
